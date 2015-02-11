@@ -16,8 +16,9 @@ public class HelloWorld {
 	{
 		
 		Mp3File file = new Mp3File("Death Grips - Get Got.mp3");
-		
-		System.out.println(file.getLength());
+		ID3v2 id = file.getId3v2Tag();
+		System.out.println(id.getArtist() + " - " + id.getAlbum());
+		System.out.println(file.getFilename() + " " + file.getLengthInSeconds() + " ");
 		/*
 		Artist artist = new Artist();
 		ArtistDaoImpl artistdao = new ArtistDaoImpl();
