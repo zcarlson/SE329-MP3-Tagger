@@ -37,9 +37,12 @@ public class MP3TaggerController implements MP3TaggerInterface{
 		return tagger.getStatus();
 	}
 
-	@Override
 	public boolean setCopyMode(boolean incoming) {
 		return tagger.setCopyMode(incoming);
+	}
+	
+	public boolean getReady() {
+		return tagger.getReady();
 	}
 
 }

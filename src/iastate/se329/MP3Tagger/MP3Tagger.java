@@ -107,6 +107,8 @@ public class MP3Tagger implements MP3TaggerInterface {
 
 	@Override
 	public String getStatus() {
+		
+		
 		return null;
 	}
 
@@ -114,6 +116,19 @@ public class MP3Tagger implements MP3TaggerInterface {
 	public boolean setCopyMode(boolean incoming) {
 		this.copyMode = incoming;
 		return true;
+	}
+
+	@Override
+	public boolean getReady() {
+		if(this.sourcePath != null && this.destPath != null && this.filePattern != null)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 
 }
