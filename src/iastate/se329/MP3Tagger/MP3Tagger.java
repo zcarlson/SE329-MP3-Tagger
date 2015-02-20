@@ -19,6 +19,7 @@ public class MP3Tagger implements MP3TaggerInterface {
 	private String destPath;
 	private boolean metadataUpdate;
 	private boolean copyMode;
+	private boolean ready;
 	private String filePattern;	
 	
 	public MP3Tagger()
@@ -26,6 +27,7 @@ public class MP3Tagger implements MP3TaggerInterface {
 		this.sourcePath = "";
 		this.destPath = "";
 		this.metadataUpdate = false;
+		this.ready = false;
 		this.copyMode = true;
 		this.filePattern = "";
 	}
@@ -37,6 +39,7 @@ public class MP3Tagger implements MP3TaggerInterface {
 		this.metadataUpdate = update;
 		this.copyMode = copy;
 		this.filePattern = pattern;
+		this.ready = true;
 	}
 	
 	@Override
@@ -48,18 +51,21 @@ public class MP3Tagger implements MP3TaggerInterface {
 	@Override
 	public boolean setSourceFolderPath(String path) {
 		this.sourcePath = path;
+		this.checkReady();
 		return true;
 	}
 
 	@Override
 	public boolean setDestinationFolderPath(String path) {
 		this.destPath = path;
+		this.checkReady();
 		return true;
 	}
 
 	@Override
 	public boolean setFileStructurePattern(String pattern) {
 		this.filePattern = pattern;
+		this.checkReady();
 		return true;
 	}
 
@@ -120,15 +126,20 @@ public class MP3Tagger implements MP3TaggerInterface {
 
 	@Override
 	public boolean getReady() {
+		return this.ready;
+	}
+	
+	private boolean checkReady()
+	{
 		if(this.sourcePath != null && this.destPath != null && this.filePattern != null)
 		{
+			this.ready = true;
 			return true;
 		}
 		else
 		{
 			return false;
 		}
-		
 	}
 
 }

@@ -60,9 +60,12 @@ public class WritableMp3File extends Mp3File {
 	
 	public String getPath(String pattern)
 	{
+		//path cannot contain / \ : * ? " | < > 
 		ID3v2 tag = this.getId3v2Tag();
 		//messageFormatter.format("\\{1}\\{0}\\{1}.mp3" , tag.getAlbum(), tag.getArtist(), tag.getGenre(), tag.getDate())
-		return tag.getAlbum() + "\\" + tag.getTitle() + ".mp3";
+		String path = tag.getArtist() + "\\" + tag.getAlbum() + "\\" + tag.getTitle() + ".mp3";
+		path = path.replaceAll(":", "");
+		return path;
 	}
 	
 
