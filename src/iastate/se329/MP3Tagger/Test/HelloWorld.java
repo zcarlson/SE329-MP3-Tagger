@@ -1,5 +1,7 @@
 package iastate.se329.MP3Tagger.Test;
 
+import iastate.se329.MP3Tagger.WritableMp3File;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;

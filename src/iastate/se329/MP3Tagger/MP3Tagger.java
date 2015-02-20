@@ -1,7 +1,5 @@
 package iastate.se329.MP3Tagger;
 
-import iastate.se329.MP3Tagger.Test.WritableMp3File;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -103,7 +101,7 @@ public class MP3Tagger implements MP3TaggerInterface {
 			}
 		}
 		
-		return false;
+		return true;
 	}
 
 	@Override

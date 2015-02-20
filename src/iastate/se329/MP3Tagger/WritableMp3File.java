@@ -1,7 +1,8 @@
-package iastate.se329.MP3Tagger.Test;
+package iastate.se329.MP3Tagger;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -61,10 +62,13 @@ public class WritableMp3File extends Mp3File {
 	public String getPath(String pattern)
 	{
 		//path cannot contain / \ : * ? " | < > 
-		ID3v2 tag = this.getId3v2Tag();
 		//messageFormatter.format("\\{1}\\{0}\\{1}.mp3" , tag.getAlbum(), tag.getArtist(), tag.getGenre(), tag.getDate())
-		String path = tag.getArtist() + "\\" + tag.getAlbum() + "\\" + tag.getTitle() + ".mp3";
-		path = path.replaceAll(":", "");
+		ID3v2 tag = this.getId3v2Tag();
+		String path = MessageFormat.format("{1}\\{1} - {0}\\{2}.mp3", tag.getAlbum().trim(), tag.getArtist().trim(), tag.getTitle().trim());
+		
+		//String path = tag.getAlbum().trim() + "\\"  + tag.getTitle().trim()  + ".mp3";
+		path = path.replaceAll("[:/\\*?\"|<>]", "");
+		
 		return path;
 	}
 	
