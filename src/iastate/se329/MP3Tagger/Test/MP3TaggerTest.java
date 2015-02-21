@@ -1,5 +1,8 @@
 package iastate.se329.MP3Tagger.Test;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 import iastate.se329.MP3Tagger.*;
 
 public class MP3TaggerTest {
@@ -8,11 +11,23 @@ public class MP3TaggerTest {
 		MP3TaggerController controller = new MP3TaggerController();
 		controller.setSourceFolderPath("C:\\Users\\Trey\\Documents\\GitHub\\SE329-MP3-Tagger");
 		controller.setDestinationFolderPath("C:\\Users\\Trey\\Documents\\GitHub\\SE329-MP3-Tagger\\TestZone");
+		controller.setFileStructurePattern("");
+		Thread t = new Thread(controller);
+		t.start();
 		
-		if(controller.start())
+		while(t.isAlive())
 		{
-			System.out.println("Done");
+			
 		}
+		
+		String problem = controller.getNextProblem();
+		while(problem != null)
+		{
+			System.out.println(problem);
+			problem = controller.getNextProblem();
+		}
+		
+		
 		
 
 	}

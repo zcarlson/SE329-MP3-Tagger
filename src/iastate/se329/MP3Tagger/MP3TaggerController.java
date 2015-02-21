@@ -1,6 +1,6 @@
 package iastate.se329.MP3Tagger;
 
-public class MP3TaggerController implements MP3TaggerInterface{
+public class MP3TaggerController implements MP3TaggerInterface, Runnable{
 	
 	private MP3Tagger tagger;
 	
@@ -43,6 +43,17 @@ public class MP3TaggerController implements MP3TaggerInterface{
 	
 	public boolean getReady() {
 		return tagger.getReady();
+	}
+	
+	public String getNextProblem()
+	{
+		return tagger.getNextProblem();
+	}
+
+	@Override
+	public void run() {
+		tagger.run();
+		
 	}
 
 }
