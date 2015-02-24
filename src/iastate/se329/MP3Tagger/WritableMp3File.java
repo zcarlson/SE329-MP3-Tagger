@@ -76,7 +76,7 @@ public class WritableMp3File extends Mp3File {
 		{
 			throw new TagException();
 		}
-		pattern = pattern.replaceAll("[:/\\*?\"|<>]", "");
+		pattern = pattern.replaceAll("[:\\*?\"|<>]", "");
 		return pattern;
 	}
 	

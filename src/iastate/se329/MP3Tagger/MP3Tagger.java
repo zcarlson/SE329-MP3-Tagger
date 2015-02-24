@@ -78,7 +78,17 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 		
 		Iterator<File> iter = FileUtils.iterateFilesAndDirs(new File(sourcePath), new SuffixFileFilter(".mp3"), DirectoryFileFilter.INSTANCE);
 		File current;
-		
+		String slash;
+		if(this.destPath.contains("/"))
+		{
+			//Unix
+			slash = "/";
+		}
+		else
+		{
+			//Windows
+			slash = "\\";
+		}
 		WritableMp3File currentmp3;
 		while(iter.hasNext())
 		{
@@ -88,14 +98,15 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 				try {
 					//colons cause problems. need to escape the bad characters
 					currentmp3 = new WritableMp3File(current);
-					System.out.println(this.destPath +"\\"+ currentmp3.getPath(this.filePattern));
+					System.out.println(this.destPath + slash + currentmp3.getPath(this.filePattern));
 					if(this.copyMode)
 					{
-						FileUtils.copyFile(current, new File(this.destPath +"\\"+ currentmp3.getPath(this.filePattern)));
+						
+						FileUtils.copyFile(current, new File(this.destPath + slash + currentmp3.getPath(this.filePattern)));
 					}
 					else
 					{
-						FileUtils.moveFile(current, new File(this.destPath +"\\"+ currentmp3.getPath(this.filePattern)));
+						FileUtils.moveFile(current, new File(this.destPath + slash + currentmp3.getPath(this.filePattern)));
 					}
 				} catch (UnsupportedTagException e) {
 					e.printStackTrace();
