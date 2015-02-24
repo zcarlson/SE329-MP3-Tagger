@@ -1,5 +1,7 @@
 package iastate.se329.MP3TaggerGUI;
 
+import iastate.se329.MP3Tagger.MP3TaggerController;
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,12 +28,14 @@ public class MP3TaggerGUI extends JFrame
     private JTextField txt_sourceDir;
     private JTextField txt_destinationDir;
     private JFileChooser fileChooser;
+    private MP3TaggerController tagger;
 
     /**
      * Launch the application.
      */
     public static void main(String[] args)
     {
+    	
         EventQueue.invokeLater(new Runnable() {
             public void run()
             {
@@ -57,7 +61,8 @@ public class MP3TaggerGUI extends JFrame
         setBounds(100, 100, 450, 300);
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
+        
+        
         // JMenuBar
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -71,6 +76,8 @@ public class MP3TaggerGUI extends JFrame
         JMenu mnHelp = new JMenu("Help");
         menuBar.add(mnHelp);
 
+        tagger = new MP3TaggerController();
+        
         // Initialize contentPane (the JPanel
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -84,9 +91,17 @@ public class MP3TaggerGUI extends JFrame
         contentPane.add(lbl_fileStructureInput);
 
         txt_fileStructureInput = new JTextField();
-        txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %author, %album, %title, %track, %year, %trackNum");
-        txt_fileStructureInput.setText("%author\\%album\\%title");
+        txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %A (Artist), %a (Album), %T (Track Title), %t (TrackNumber, and %Y (Year)");
+        txt_fileStructureInput.setText("%A\\%a\\%T.mp3");
         txt_fileStructureInput.setBounds(10, 31, 200, 21);
+        txt_fileStructureInput.addActionListener(new ActionListener() {
+        	//listens to enter on the text box, updates the tagger
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//tagger.setFileStructurePattern(txt_fileStructureInput.getText());
+			}
+        	
+        });
         contentPane.add(txt_fileStructureInput);
         txt_fileStructureInput.setColumns(10);
 
@@ -122,6 +137,7 @@ public class MP3TaggerGUI extends JFrame
                 {
                     File file = fileChooser.getSelectedFile();
                     txt_destinationDir.setText(file.getAbsolutePath());
+                    //tagger.setDestinationFolderPath(txt_destinationDir.getText());
                 }
             }
         });
@@ -137,6 +153,8 @@ public class MP3TaggerGUI extends JFrame
                 {
                     File file = fileChooser.getSelectedFile();
                     txt_sourceDir.setText(file.getAbsolutePath());
+                    //tagger.setSourceFolderPath(txt_sourceDir.getText());
+                    
                 }
             }
         });
@@ -147,7 +165,14 @@ public class MP3TaggerGUI extends JFrame
         JButton btn_start = new JButton("Start");
         btn_start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Call MP3Tagger here
+            	tagger.setDestinationFolderPath(txt_destinationDir.getText());
+            	tagger.setSourceFolderPath(txt_sourceDir.getText());
+            	tagger.setFileStructurePattern(txt_fileStructureInput.getText());
+            	if(tagger.getReady())
+            	{
+            		tagger.start();
+            	}
+                
             }
         });
         btn_start.setBounds(10, 207, 89, 23);
