@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -84,6 +85,18 @@ public class MP3TaggerGUI extends JFrame
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
+        // Copy Mode Check
+        JCheckBox copyCheck = new JCheckBox("Copy Files");
+        copyCheck.setSelected(true);
+        copyCheck.setBounds(10, 165, 150, 21);
+        contentPane.add(copyCheck);
+        
+     	// Metadata Update Mode Check
+        JCheckBox metadataCheck = new JCheckBox("Update Metadata");
+        metadataCheck.setSelected(false);
+        metadataCheck.setBounds(10, 185, 150, 21);
+        contentPane.add(metadataCheck);
+        
         // File structure input
         JLabel lbl_fileStructureInput = new JLabel("File Structure");
         lbl_fileStructureInput.setToolTipText("Input the desired file structure to be created");
@@ -168,9 +181,12 @@ public class MP3TaggerGUI extends JFrame
             	tagger.setDestinationFolderPath(txt_destinationDir.getText());
             	tagger.setSourceFolderPath(txt_sourceDir.getText());
             	tagger.setFileStructurePattern(txt_fileStructureInput.getText());
+            	tagger.setCopyMode(copyCheck.isSelected());
+            	tagger.setMetadataUpdate(metadataCheck.isSelected());
             	if(tagger.getReady())
             	{
             		tagger.start();
+            		
             	}
                 
             }
