@@ -25,15 +25,28 @@ public class HelloWorld {
 		
 		String root = "C:\\Users\\Trey\\workspace\\SE329-MP3-Tagger\\";
 		File source = new File(root + file.getFilename());
-		File dest = new File(root + file.getPath("%A"));
+		try
+		{
+			File dest = new File(root + file.getPath("%A"));
+			System.out.println(file.getPath("%A"));
+			ID3v2 id = file.getId3v2Tag();
+			FileUtils.moveFileToDirectory(source, dest, true);
+			System.out.println(id.getArtist() + " - " + id.getAlbum());
+			System.out.println(file.getFilename() + " " + file.getLengthInSeconds() + " ");
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
 		//Extract tag from mp3 file
-		ID3v2 id = file.getId3v2Tag();
-		FileUtils.moveFileToDirectory(source, dest, true);
-		System.out.println(file.getPath("%A"));
+		
+		
 		//get various attributes from tag, some potentially not populated which will return null
-		System.out.println(id.getArtist() + " - " + id.getAlbum());
-		System.out.println(file.getFilename() + " " + file.getLengthInSeconds() + " ");
-		/*
+		
+		/* Metadata Server Interface 
 		Artist artist = new Artist();
 		ArtistDaoImpl artistdao = new ArtistDaoImpl();
 		List<Artist> artistList = artistdao.getByName("Beck");

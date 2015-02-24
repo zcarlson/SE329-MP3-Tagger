@@ -88,14 +88,14 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 				try {
 					//colons cause problems. need to escape the bad characters
 					currentmp3 = new WritableMp3File(current);
-					System.out.println(this.destPath +"\\"+ currentmp3.getPath(""));
+					System.out.println(this.destPath +"\\"+ currentmp3.getPath(this.filePattern));
 					if(this.copyMode)
 					{
-						FileUtils.copyFile(current, new File(this.destPath +"\\"+ currentmp3.getPath("")));
+						FileUtils.copyFile(current, new File(this.destPath +"\\"+ currentmp3.getPath(this.filePattern)));
 					}
 					else
 					{
-						FileUtils.moveFile(current, new File(this.destPath +"\\"+ currentmp3.getPath("")));
+						FileUtils.moveFile(current, new File(this.destPath +"\\"+ currentmp3.getPath(this.filePattern)));
 					}
 				} catch (UnsupportedTagException e) {
 					e.printStackTrace();
@@ -103,6 +103,8 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 					e.printStackTrace();
 				} catch (IOException e) {
 					problems.add("File already exists!   " + current.getName());
+				} catch (TagException e) {
+					problems.add("Incomplete Tags for " + current.getName());
 				}
 			}
 		}

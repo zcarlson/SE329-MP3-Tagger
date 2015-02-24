@@ -59,17 +59,25 @@ public class WritableMp3File extends Mp3File {
 	}
 	
 	
-	public String getPath(String pattern)
+	public String getPath(String pattern) throws TagException
 	{
 		//path cannot contain / \ : * ? " | < > 
-		//messageFormatter.format("\\{1}\\{0}\\{1}.mp3" , tag.getAlbum(), tag.getArtist(), tag.getGenre(), tag.getDate())
 		ID3v2 tag = this.getId3v2Tag();
-		String path = MessageFormat.format("{1}\\{1} - {0}\\{2}.mp3", tag.getAlbum().trim(), tag.getArtist().trim(), tag.getTitle().trim());
-		
-		//String path = tag.getAlbum().trim() + "\\"  + tag.getTitle().trim()  + ".mp3";
-		path = path.replaceAll("[:/\\*?\"|<>]", "");
-		
-		return path;
+		try
+		{
+			pattern = pattern.replaceAll("%A", tag.getArtist().trim());
+			pattern = pattern.replaceAll("%a", tag.getAlbum().trim());
+			pattern = pattern.replaceAll("%Y", tag.getYear().trim());
+			pattern = pattern.replaceAll("%T", tag.getTitle().trim());
+			pattern = pattern.replaceAll("%t", tag.getTrack().trim());
+			
+		}
+		catch(Exception e)
+		{
+			throw new TagException();
+		}
+		pattern = pattern.replaceAll("[:/\\*?\"|<>]", "");
+		return pattern;
 	}
 	
 
