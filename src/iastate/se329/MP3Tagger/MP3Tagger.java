@@ -24,6 +24,9 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 	private String filePattern;
 	private LinkedList<String> problems;
 	
+	/**
+	 * Creates a blank MP3Tagger object.
+	 */
 	public MP3Tagger()
 	{
 		this.sourcePath = null;
@@ -35,6 +38,26 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 		this.problems = new LinkedList<String>();
 	}
 	
+	/**
+	 * Creates an MP3Tagger object with the specified parameters.
+	 * @param src The directory where the MP3s to be sorted are currently stored.
+	 * @param dest The directory where the MP3s are going to be sorted into.
+	 * @param update Determines whether or not the metadata for the MP3s will be updated.
+	 * @param copy Determines if the files are going to be copied into the dest file, or just moved there.
+	 * @param pattern The pattern of how the files will be organized.<br>
+	 * Valid pattern strings are formatted as follows: <br>
+	 * %A = Artist <br>
+	 * %a = Album <br>
+	 * %Y = Year <br>
+	 * %T = Title <br>
+	 * %t = Track <br>
+	 * 
+	 * The following pattern, therefore, would yield the following file path:<br>
+	 * pattern = " %A\%a\%t - %T.mp3"<br>
+	 * resulting path = "Artist\Album\Track - Title.mp3"<br>
+	 * The following symbols will be removed from the file path after
+	 * the appropriate tag information has been added:<br>[ : \\ * ? \" | < > ]<br>
+	 */
 	public MP3Tagger(String src, String dest, boolean update, boolean copy, String pattern)
 	{
 		this.sourcePath = src;
@@ -53,6 +76,11 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 	}
 
 	@Override
+	/**
+	 * Sets the source directory to the given path.
+	 * @param path The path of the new source directory.
+	 * @return True upon successful completion.
+	 */
 	public boolean setSourceFolderPath(String path) {
 		this.sourcePath = path;
 		this.checkReady();
@@ -60,6 +88,11 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 	}
 
 	@Override
+	/**
+	 * Sets the destination directory to the given path.
+	 * @param path The path of the new destination directory.
+	 * @return True upon successful completion.
+	 */
 	public boolean setDestinationFolderPath(String path) {
 		this.destPath = path;
 		this.checkReady();
@@ -67,6 +100,11 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 	}
 
 	@Override
+	/**
+	 * Sets the file structure pattern to the given pattern.
+	 * @param path The new file structure pattern.
+	 * @return true upon successful completion.
+	 */
 	public boolean setFileStructurePattern(String pattern) {
 		this.filePattern = pattern;
 		this.checkReady();
@@ -74,11 +112,17 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 	}
 
 	@Override
+	/**
+	 * This method sorts the MP3 files in the specified source directory and either moves or copies the music into the specified destination directory, in the format specified by the file structure pattern.
+	 * @return True upon successful completion.
+	 */
 	public boolean start() {
-		
+		//Create an iterator containing all directories and MP3 files 
 		Iterator<File> iter = FileUtils.iterateFilesAndDirs(new File(sourcePath), new SuffixFileFilter(".mp3"), DirectoryFileFilter.INSTANCE);
 		File current;
 		String slash;
+		
+		//Determine slash type
 		if(this.destPath.contains("/"))
 		{
 			//Unix
@@ -89,16 +133,21 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 			//Windows
 			slash = "\\";
 		}
+		
 		WritableMp3File currentmp3;
+		
+		//iterate through files
 		while(iter.hasNext())
 		{
 			current = iter.next();
+			//only process MP3s
 			if(!current.isDirectory())
 			{
 				try {
 					//colons cause problems. need to escape the bad characters
 					currentmp3 = new WritableMp3File(current);
 					System.out.println(this.destPath + slash + currentmp3.getPath(this.filePattern));
+					//copy or move files into proper position.
 					if(this.copyMode)
 					{
 						
@@ -146,6 +195,10 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 		return this.ready;
 	}
 	
+	/**
+	 * Checks if the MP3Tagger is ready to start().
+	 * @return True if MP3Tagger is ready to start, false otherwise.
+	 */
 	private boolean checkReady()
 	{
 		if(this.sourcePath != null && this.destPath != null && this.filePattern != null)
@@ -159,6 +212,10 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 		}
 	}
 
+	/**
+	 * get the next problem detected in the list.
+	 * @return The next problem detected in the list.
+	 */
 	public String getNextProblem()
 	{
 		if(problems.size() > 0)
