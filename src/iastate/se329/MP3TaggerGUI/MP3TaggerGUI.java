@@ -91,6 +91,12 @@ public class MP3TaggerGUI extends JFrame
         copyCheck.setBounds(10, 165, 150, 21);
         contentPane.add(copyCheck);
         
+     // AlbumArt Update Mode Check
+        JCheckBox artCheck = new JCheckBox("Embed Art");
+        artCheck.setSelected(false);
+        artCheck.setBounds(160, 165, 150, 21);
+        contentPane.add(artCheck);
+        
      	// Metadata Update Mode Check
         JCheckBox metadataCheck = new JCheckBox("Update Metadata");
         metadataCheck.setSelected(false);
