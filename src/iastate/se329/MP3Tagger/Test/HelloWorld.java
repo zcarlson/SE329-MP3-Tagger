@@ -20,25 +20,26 @@ public class HelloWorld {
 	public static void main(String[] args) throws UnsupportedTagException, InvalidDataException, IOException
 	{
 		//file on system, in the project root folder. Need to experiment with getting paths right
-		WritableMp3File file = new WritableMp3File("Death Grips - Get Got.mp3");
+//		WritableMp3File file = new WritableMp3File(".\\TestMusic\\Death Grips - Get Got.mp3");
+//		
+//		
+//		String root = "C:\\Users\\Trey\\workspace\\SE329-MP3-Tagger\\TestMusic";
+//		File source = new File(root + file.getFilename());
+//		try
+//		{
+//			File dest = new File(root + file.getPath("%A"));
+//			System.out.println(file.getPath("%A"));
+//			ID3v2 id = file.getId3v2Tag();
+//			//FileUtils.moveFileToDirectory(source, dest, true);
+//			System.out.println(id.getArtist() + " - " + id.getAlbum());
+//			System.out.println(file.getFilename() + " " + file.getLengthInSeconds() + " ");
+//			
+//		}
+//		catch(Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 		
-		
-		String root = "C:\\Users\\Trey\\workspace\\SE329-MP3-Tagger\\";
-		File source = new File(root + file.getFilename());
-		try
-		{
-			File dest = new File(root + file.getPath("%A"));
-			System.out.println(file.getPath("%A"));
-			ID3v2 id = file.getId3v2Tag();
-			FileUtils.moveFileToDirectory(source, dest, true);
-			System.out.println(id.getArtist() + " - " + id.getAlbum());
-			System.out.println(file.getFilename() + " " + file.getLengthInSeconds() + " ");
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 		
 		
 		//Extract tag from mp3 file
@@ -46,13 +47,8 @@ public class HelloWorld {
 		
 		//get various attributes from tag, some potentially not populated which will return null
 		
-		/* Metadata Server Interface 
-		Artist artist = new Artist();
-		ArtistDaoImpl artistdao = new ArtistDaoImpl();
-		List<Artist> artistList = artistdao.getByName("Beck");
-		artist = artistList.get(0);
-		System.out.println(artist.getName());
-		*/
+		// Metadata Server Interface 
+	
 	}
 	
 }

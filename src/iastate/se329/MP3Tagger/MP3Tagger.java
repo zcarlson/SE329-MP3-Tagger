@@ -148,6 +148,7 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
             // only process MP3s
             if (!current.isDirectory()) {
                 update(current);
+                embedAlbumArt(current);
                 organize(current, slash);
             }
         }
@@ -157,6 +158,17 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 
     private void update(File current) {
         // update meta tags here
+    }
+    
+    /**
+     * Given a handle to a fully tagged mp3 file, retrieve the album art from the data server and embed it into the mp3 file.
+     * @param current The fully tagged mp3 file that will have album art added to it.
+     */
+    private void embedAlbumArt(File current) {
+    	
+    	
+    	
+    	
     }
 
     /**
