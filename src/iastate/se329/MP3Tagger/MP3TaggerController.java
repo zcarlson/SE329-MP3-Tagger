@@ -1,5 +1,7 @@
 package iastate.se329.MP3Tagger;
 
+import java.io.File;
+
 public class MP3TaggerController implements MP3TaggerInterface, Runnable {
 
     private MP3Tagger tagger;
@@ -24,8 +26,8 @@ public class MP3TaggerController implements MP3TaggerInterface, Runnable {
         return tagger.setFileStructurePattern(pattern);
     }
 
-    public boolean start() {
-        return tagger.start();
+    public boolean start(File current, String slash) {
+        return tagger.start(current, slash);
     }
 
     public boolean pause() {

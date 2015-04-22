@@ -125,33 +125,14 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
      * This method sorts the MP3 files in the specified source directory and either moves or copies the music into the specified destination directory, in the format specified by the file structure pattern.
      * @return True upon successful completion.
      */
-    public boolean start() {
-        // Create an iterator containing all directories and MP3 files
-        Iterator<File> iter = FileUtils.iterateFilesAndDirs(
-                new File(sourcePath), new SuffixFileFilter(".mp3"),
-                DirectoryFileFilter.INSTANCE);
-        File current;
-        String slash;
-
-        // Determine slash type
-        if (this.destPath.contains("/")) {
-            // Unix
-            slash = "/";
-        } else {
-            // Windows
-            slash = "\\";
-        }
-
-        // iterate through files
-        while (iter.hasNext()) {
-            current = iter.next();
-            // only process MP3s
+    public boolean start(File current, String slash) {
+        
             if (!current.isDirectory()) {
                 update(current);
                 embedAlbumArt(current);
                 organize(current, slash);
             }
-        }
+       
 
         return true;
     }
@@ -259,7 +240,8 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
         while (this.ready == false) {
 
         }
-        this.start();
+       //this.start();
+       
 
     }
 

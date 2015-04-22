@@ -1,5 +1,7 @@
 package iastate.se329.MP3Tagger;
 
+import java.io.File;
+
 public interface MP3TaggerInterface {
     public boolean getReady();
 
@@ -13,7 +15,7 @@ public interface MP3TaggerInterface {
 
     public boolean setFileStructurePattern(String pattern);
 
-    public boolean start();
+    public boolean start(File current, String slash);
 
     public boolean pause();
 

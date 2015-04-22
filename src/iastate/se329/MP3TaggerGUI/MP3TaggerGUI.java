@@ -5,7 +5,11 @@ import iastate.se329.MP3Tagger.MP3TaggerController;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -15,12 +19,16 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
-import javax.swing.SwingConstants;
-import javax.swing.JMenuItem;
 
-public class MP3TaggerGUI extends JFrame
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+
+public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
 {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +38,9 @@ public class MP3TaggerGUI extends JFrame
     private JTextField txt_destinationDir;
     private JFileChooser fileChooser;
     private MP3TaggerController tagger;
+    private JProgressBar progressBar;
+    private JButton btn_start;
+    private JButton btn_stop;
 
     /**
      * Launch the application.
@@ -181,27 +192,109 @@ public class MP3TaggerGUI extends JFrame
         contentPane.add(btn_sourcefilebrowser);
 
         // Start and stop buttons
-        JButton btn_start = new JButton("Start");
+        btn_start = new JButton("Start");
+        btn_start.setActionCommand("start");
         btn_start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	Task task;
             	tagger.setDestinationFolderPath(txt_destinationDir.getText());
             	tagger.setSourceFolderPath(txt_sourceDir.getText());
             	tagger.setFileStructurePattern(txt_fileStructureInput.getText());
             	tagger.setCopyMode(copyCheck.isSelected());
             	tagger.setMetadataUpdate(metadataCheck.isSelected());
+       
             	if(tagger.getReady())
             	{
-            		tagger.start();
-            		
+            		//tagger.start();
+            		btn_start.setEnabled(false);
+            		btn_stop.setEnabled(true);
+            		//Starts the tagging operation in the worker class below
+            		task = new Task();
+                    task.addPropertyChangeListener(MP3TaggerGUI.this);
+                    task.execute();
             	}
                 
             }
         });
+        
+        
         btn_start.setBounds(10, 207, 89, 23);
         contentPane.add(btn_start);
+        
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
+        progressBar.setBounds(120, 207, 200, 23);
+        contentPane.add(progressBar);
 
-        JButton btn_stop = new JButton("Stop");
+        btn_stop = new JButton("Stop");
         btn_stop.setBounds(335, 207, 89, 23);
         contentPane.add(btn_stop);
+        btn_stop.setEnabled(false);
     }
+    
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            progressBar.setValue(progress);
+//            taskOutput.append(String.format(
+//                    "Completed %d%% of task.\n", task.getProgress()));
+        } 
+    }
+    
+    class Task extends SwingWorker<Void, Void> {
+        /*
+         * Main task. Executed in background thread. Does all of what tagger.start() used to do, but only has
+         * tagger handle one file at a time. This is to track progress of how many files have been tagged.
+         */
+        @Override
+        public Void doInBackground() {
+            
+            int progress = 0;
+            //Initialize progress property.
+            setProgress(0);
+            
+            Iterator<File> iter = FileUtils.iterateFilesAndDirs(
+                    new File(txt_sourceDir.getText()), new SuffixFileFilter(".mp3"),
+                    DirectoryFileFilter.INSTANCE);
+            
+            int directorySize = FileUtils.listFiles(new File(txt_sourceDir.getText()), null, true).size();
+           
+            File current;
+            String slash;
+
+            // Determine slash type
+            if (txt_destinationDir.getText().contains("/")) {
+                // Unix
+                slash = "/";
+            } else {
+                // Windows
+                slash = "\\";
+            }
+
+            // iterate through files
+            while (iter.hasNext()) {
+            	current = iter.next();
+            	tagger.start(current, slash);
+            	progress += (int)Math.ceil((1.0 / (double)directorySize) * 100.0);
+                setProgress(Math.min(progress, 100));
+            }
+            
+            
+            return null;
+        }
+
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+//            Toolkit.getDefaultToolkit().beep();
+        	btn_start.setEnabled(true);
+//            setCursor(null); turn off the wait cursor
+//            taskOutput.append("Done!\n");
+        }
+    }
+    
 }
+
