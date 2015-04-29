@@ -13,7 +13,6 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 
     private String sourcePath;
     private String destPath;
-    private boolean metadataUpdate;
     private boolean copyMode;
     private boolean ready;
     private String filePattern;
@@ -25,7 +24,6 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
     public MP3Tagger() {
         this.sourcePath = null;
         this.destPath = null;
-        this.metadataUpdate = false;
         this.ready = false;
         this.copyMode = true;
         this.filePattern = null;
@@ -67,7 +65,6 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
             String pattern) {
         this.sourcePath = src;
         this.destPath = dest;
-        this.metadataUpdate = update;
         this.copyMode = copy;
         this.filePattern = pattern;
         this.ready = true;
@@ -76,7 +73,6 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
 
     @Override
     public boolean setMetadataUpdate(boolean incoming) {
-        this.metadataUpdate = incoming;
         return true;
     }
 
