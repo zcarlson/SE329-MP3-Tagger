@@ -1,6 +1,7 @@
 package iastate.se329.MP3TaggerGUI;
 
 import iastate.se329.MP3Tagger.MP3TaggerController;
+import iastate.se329.MP3Tagger.OSCompatibility;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -47,7 +48,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
      */
     public static void main(String[] args)
     {
-    	
         EventQueue.invokeLater(new Runnable() {
             public void run()
             {
@@ -122,7 +122,7 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
 
         txt_fileStructureInput = new JTextField();
         txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %A (Artist), %a (Album), %T (Track Title), %t (TrackNumber, and %Y (Year)");
-        txt_fileStructureInput.setText("%A\\%a\\%T.mp3");
+        txt_fileStructureInput.setText("%A" + OSCompatibility.delimiter() + "%a" + OSCompatibility.delimiter() + "%T.mp3");
         txt_fileStructureInput.setBounds(10, 31, 200, 21);
         txt_fileStructureInput.addActionListener(new ActionListener() {
         	//listens to enter on the text box, updates the tagger
@@ -141,7 +141,7 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         contentPane.add(lbl_sourceDir);
 
         txt_sourceDir = new JTextField();
-        txt_sourceDir.setText("C:\\Users\\UserName\\CurMusic");
+        txt_sourceDir.setText(OSCompatibility.defaultSourcePath());
         txt_sourceDir.setBounds(10, 86, 200, 21);
         contentPane.add(txt_sourceDir);
         txt_sourceDir.setColumns(10);
@@ -152,7 +152,7 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         contentPane.add(lbl_destinationDir);
 
         txt_destinationDir = new JTextField();
-        txt_destinationDir.setText("C:\\Users\\UserName\\TaggedMusic");
+        txt_destinationDir.setText(OSCompatibility.defaultTargetPath());
         txt_destinationDir.setColumns(10);
         txt_destinationDir.setBounds(10, 141, 200, 21);
         contentPane.add(txt_destinationDir);

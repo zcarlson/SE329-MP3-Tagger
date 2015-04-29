@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import iastate.se329.MP3Tagger.MP3TaggerController;
+import iastate.se329.MP3Tagger.OSCompatibility;
 
 import org.junit.Test;
 
@@ -17,29 +18,42 @@ public class MP3TaggerControllerTests
 	@Test
 	public void startTest1()
 	{
-		File result_file1 = new File("C:\\Users\\family\\Desktop\\Inbound\\MuzakLibrary\\Bob Acri\\Bob Acri\\Sleep Away.mp3");
-		File result_file2 = new File("C:\\Users\\family\\Desktop\\Inbound\\MuzakLibrary\\Mr. Scruff\\Ninja Tuna\\Kalimba.mp3");
-		File result_file3 = new File("C:\\Users\\family\\Desktop\\Inbound\\MuzakLibrary\\Richard Stoltzman\\Slovak Radio Symphony Orchestra\\Fine Music, Vol. 1\\Maid with the Flaxen Hair.mp3");
-		
-		assertFalse("This file should not exist in this directory yet!", result_file1.exists());
-		assertFalse("This file should not exist in this directory yet!", result_file2.exists());
-		assertFalse("This file should not exist in this directory yet!", result_file3.exists());
+		File[] resultFiles;
+		if (OSCompatibility.isMac()) {
+			File[] files = {
+					new File("/Users/anneore/SortedMusic/Kris Wilson/Unknown Album/What Trees Reach For.mp3"),
+					new File("/Users/anneore/SortedMusic/Death Cab For Cutie/Transatlanticism/04 Expo '86.mp3"),
+					new File("/Users/anneore/SortedMusic/Death Cab For Cutie/Transatlanticism/02 Lightness.mp3")
+			};
+			resultFiles = files;
+		} else {
+			File[] files = {
+					new File("C:\\Users\\family\\Desktop\\Inbound\\MuzakLibrary\\Bob Acri\\Bob Acri\\Sleep Away.mp3"),
+					new File("C:\\Users\\family\\Desktop\\Inbound\\MuzakLibrary\\Mr. Scruff\\Ninja Tuna\\Kalimba.mp3"),
+					new File("C:\\Users\\family\\Desktop\\Inbound\\MuzakLibrary\\Richard Stoltzman\\Slovak Radio Symphony Orchestra\\Fine Music, Vol. 1\\Maid with the Flaxen Hair.mp3")	
+			};
+			resultFiles = files;
+		}
+			
+		for (File i : resultFiles) {
+			assertFalse("File should not exist but does!", i.exists());
+		}
 		
 		MP3TaggerController sorter = new MP3TaggerController();
 		sorter.setCopyMode(true);
 		assertFalse("Sorter should not be ready yet.", sorter.getReady());
-		sorter.setSourceFolderPath("C:\\Users\\Public\\Music\\Sample Music");
+		sorter.setSourceFolderPath(OSCompatibility.defaultSourcePath());
 		assertFalse("Sorter should not be ready yet.", sorter.getReady());
-		sorter.setDestinationFolderPath("C:\\Users\\family\\Desktop\\Inbound\\MuzakLibrary");
+		sorter.setDestinationFolderPath(OSCompatibility.defaultTargetPath());
 		assertFalse("Sorter should not be ready yet.", sorter.getReady());
-		sorter.setFileStructurePattern("%A\\%a\\%T.mp3");
+		sorter.setFileStructurePattern("%A" + OSCompatibility.delimiter() + "%a" + OSCompatibility.delimiter() + "%T.mp3");
 		assertTrue("Sorter should now be ready.", sorter.getReady());
-		
+
 		sorter.run();
 		
-		assertTrue("This file should exist in this directory by now!", result_file1.exists());
-		assertTrue("This file should exist in this directory by now!", result_file2.exists());
-		assertTrue("This file should exist in this directory by now!", result_file3.exists());
+		for (File i : resultFiles) {
+			assertTrue("File should exist but does not", i.exists());
+		}
 	}
 	
 	/**
