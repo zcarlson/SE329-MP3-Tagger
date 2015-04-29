@@ -3,8 +3,8 @@ package iastate.se329.MP3TaggerGUI;
 import iastate.se329.MP3Tagger.MP3TaggerController;
 import iastate.se329.MP3Tagger.OSCompatibility;
 
+import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -24,7 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
@@ -43,7 +42,7 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
     
     private static final int startingY = 10;
     private static final int ySpaceBetweenSections = 30;
-    private static final int ySpaceWithinSections = 20;
+    private static final int ySpaceWithinSections = 22;
     private static final int xSpaceBtwnFieldAndButton = 10;
     
     private JPanel contentPane;
@@ -96,7 +95,8 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-        
+        contentPane.setBackground(Color.WHITE);
+
         int yCoord = startingY;
         
         // Add title
