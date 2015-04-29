@@ -105,13 +105,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         picLabel.setBounds(0, yCoord, GUIWidth, 29);
         contentPane.add(picLabel);
         
-       /* JLabel lbl_title = new JLabel("MP3 Tagger", SwingConstants.CENTER);
-        lbl_title.setToolTipText("Input the desired file structure to be created");
-        Font font = lbl_title.getFont();
-	    Font boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize());
-	    lbl_title.setFont(boldFont);
-        contentPane.add(lbl_title);*/
-
         // File structure input
         yCoord += ySpaceBetweenSections;
         JLabel lbl_fileStructureInput = new JLabel("File Structure");
