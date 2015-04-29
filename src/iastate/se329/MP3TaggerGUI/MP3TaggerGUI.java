@@ -16,8 +16,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
@@ -73,20 +71,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         
-        
-        // JMenuBar
-        JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
-
-        JMenu mnFile = new JMenu("File");
-        menuBar.add(mnFile);
-
-        JMenu mnEdit = new JMenu("Edit");
-        menuBar.add(mnEdit);
-
-        JMenu mnHelp = new JMenu("Help");
-        menuBar.add(mnHelp);
-
         tagger = new MP3TaggerController();
         
         // Initialize contentPane (the JPanel
