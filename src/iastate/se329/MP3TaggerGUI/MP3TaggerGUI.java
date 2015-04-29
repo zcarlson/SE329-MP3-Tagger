@@ -47,7 +47,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
     private static final int xSpaceBtwnFieldAndButton = 10;
     
     private JPanel contentPane;
-    private JTextField txt_fileStructureInput;
     private JTextField txt_sourceDir;
     private JTextField txt_destinationDir;
     private JFileChooser fileChooser;
@@ -115,7 +114,7 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         contentPane.add(lbl_fileStructureInput);
 
         yCoord += ySpaceWithinSections;
-        String[] structureOptions = {"--", "Artist", "Year", "Album", "Track", "Title"};
+        String[] structureOptions = {"--", "Artist", "Year", "Album", "Track #", "Title"};
         JComboBox[] options = {new JComboBox(structureOptions), 
         		new JComboBox(structureOptions), new JComboBox(structureOptions), 
         		new JComboBox(structureOptions), new JComboBox(structureOptions)};
@@ -127,17 +126,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
             contentPane.add(o);
         }
         
-        //structureList.addActionListener();
-
-        
-        /*
-        txt_fileStructureInput = new JTextField();
-        txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %A (Artist), %a (Album), %T (Track Title), %t (TrackNumber, and %Y (Year)");
-        txt_fileStructureInput.setText("%A" + OSCompatibility.delimiter() + "%a" + OSCompatibility.delimiter() + "%T.mp3");
-        txt_fileStructureInput.setBounds(lrMargin, yCoord, getSize().width - buttonWidth - xSpaceBtwnFieldAndButton - lrMargin, 21);
-        contentPane.add(txt_fileStructureInput);
-        txt_fileStructureInput.setColumns(10);*/
-
         // Source directory input
         yCoord += ySpaceBetweenSections;
         JLabel lbl_sourceDir = new JLabel("Source");
@@ -288,25 +276,14 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
             int directorySize = FileUtils.listFiles(new File(txt_sourceDir.getText()), null, true).size();
            
             File current;
-            String slash;
-
-            // Determine slash type
-            if (txt_destinationDir.getText().contains("/")) {
-                // Unix
-                slash = "/";
-            } else {
-                // Windows
-                slash = "\\";
-            }
 
             // iterate through files
             while (iter.hasNext()) {
             	current = iter.next();
-            	tagger.start(current, slash);
+            	tagger.start(current);
             	progress += (int)Math.ceil((1.0 / (double)directorySize) * 100.0);
                 setProgress(Math.min(progress, 100));
             }
-            
             
             return null;
         }
@@ -322,8 +299,8 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
     
     private String convertUserInput(JComboBox[] options) {
     	String result = "";
-    	String[] from = {"--", "Artist", "Year", "Album", "Track", "Title"};
-    	String[] to   = {""  , "%A"    , "%Y"  , "%a"   , "%t"   , "%t"};
+    	String[] from = {"--", "Artist", "Year", "Album", "Track #", "Title"};
+    	String[] to   = {""  , "%A"    , "%Y"  , "%a"   , "%t"     , "%T"};
     	
     	boolean needDelimiter = false;
     	

@@ -15,7 +15,7 @@ public interface MP3TaggerInterface {
 
     public boolean setFileStructurePattern(String pattern);
 
-    public boolean start(File current, String slash);
+    public boolean start(File current);
 
     public boolean pause();
 

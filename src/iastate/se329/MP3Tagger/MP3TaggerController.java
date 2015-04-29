@@ -26,8 +26,8 @@ public class MP3TaggerController implements MP3TaggerInterface, Runnable {
         return tagger.setFileStructurePattern(pattern);
     }
 
-    public boolean start(File current, String slash) {
-        return tagger.start(current, slash);
+    public boolean start(File current) {
+        return tagger.start(current);
     }
 
     public boolean pause() {
