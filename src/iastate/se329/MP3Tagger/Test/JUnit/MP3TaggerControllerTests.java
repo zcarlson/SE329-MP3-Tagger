@@ -1,11 +1,11 @@
 package iastate.se329.MP3Tagger.Test.JUnit;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
-
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import iastate.se329.MP3Tagger.MP3TaggerController;
 import iastate.se329.MP3Tagger.OSCompatibility;
+
+import java.io.File;
 
 import org.junit.Test;
 

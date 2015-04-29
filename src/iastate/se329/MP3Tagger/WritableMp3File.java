@@ -2,7 +2,6 @@ package iastate.se329.MP3Tagger;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;

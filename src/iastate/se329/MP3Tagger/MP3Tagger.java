@@ -2,16 +2,12 @@ package iastate.se329.MP3Tagger;
 
 import java.io.File;
 import java.io.IOException;
-
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.IOFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
 
-import com.mpatric.mp3agic.*;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 public class MP3Tagger implements MP3TaggerInterface, Runnable {
 
