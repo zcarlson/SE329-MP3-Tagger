@@ -7,11 +7,15 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -74,8 +78,9 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
 
     /**
      * Create the frame.
+     * @throws IOException 
      */
-    public MP3TaggerGUI()
+    public MP3TaggerGUI() throws IOException
     {
         // Initialization
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,13 +100,17 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         int yCoord = startingY;
         
         // Add title
-        JLabel lbl_title = new JLabel("MP3 Tagger", SwingConstants.CENTER);
+        BufferedImage myPicture = ImageIO.read(new File("mp3tagger.png"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        picLabel.setBounds(0, yCoord, GUIWidth, 29);
+        contentPane.add(picLabel);
+        
+       /* JLabel lbl_title = new JLabel("MP3 Tagger", SwingConstants.CENTER);
         lbl_title.setToolTipText("Input the desired file structure to be created");
-        lbl_title.setBounds(0, yCoord, GUIWidth, 21);
         Font font = lbl_title.getFont();
 	    Font boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize());
 	    lbl_title.setFont(boldFont);
-        contentPane.add(lbl_title);
+        contentPane.add(lbl_title);*/
 
         // File structure input
         yCoord += ySpaceBetweenSections;
