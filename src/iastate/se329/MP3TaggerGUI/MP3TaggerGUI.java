@@ -95,7 +95,8 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
-        contentPane.setBackground(Color.WHITE);
+        int color = Integer.parseInt("ccebff", 16);
+        contentPane.setBackground(new Color(color));
 
         int yCoord = startingY;
         
