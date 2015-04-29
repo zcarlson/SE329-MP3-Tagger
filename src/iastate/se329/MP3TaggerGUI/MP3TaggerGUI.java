@@ -101,7 +101,7 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         copyCheck.setBounds(10, 165, 150, 21);
         contentPane.add(copyCheck);
         
-     // AlbumArt Update Mode Check
+        // AlbumArt Update Mode Check
         JCheckBox artCheck = new JCheckBox("Embed Art");
         artCheck.setSelected(false);
         artCheck.setBounds(160, 165, 150, 21);
@@ -123,14 +123,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %A (Artist), %a (Album), %T (Track Title), %t (TrackNumber, and %Y (Year)");
         txt_fileStructureInput.setText("%A" + OSCompatibility.delimiter() + "%a" + OSCompatibility.delimiter() + "%T.mp3");
         txt_fileStructureInput.setBounds(10, 31, 200, 21);
-        txt_fileStructureInput.addActionListener(new ActionListener() {
-        	//listens to enter on the text box, updates the tagger
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//tagger.setFileStructurePattern(txt_fileStructureInput.getText());
-			}
-        	
-        });
         contentPane.add(txt_fileStructureInput);
         txt_fileStructureInput.setColumns(10);
 
@@ -166,7 +158,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
                 {
                     File file = fileChooser.getSelectedFile();
                     txt_destinationDir.setText(file.getAbsolutePath());
-                    //tagger.setDestinationFolderPath(txt_destinationDir.getText());
                 }
             }
         });
@@ -182,7 +173,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
                 {
                     File file = fileChooser.getSelectedFile();
                     txt_sourceDir.setText(file.getAbsolutePath());
-                    //tagger.setSourceFolderPath(txt_sourceDir.getText());
                     
                 }
             }
@@ -204,9 +194,9 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
        
             	if(tagger.getReady())
             	{
-            		//tagger.start();
             		btn_start.setEnabled(false);
             		btn_stop.setEnabled(true);
+            		
             		//Starts the tagging operation in the worker class below
             		task = new Task();
                     task.addPropertyChangeListener(MP3TaggerGUI.this);
@@ -215,7 +205,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
                 
             }
         });
-        
         
         btn_start.setBounds(10, 207, 89, 23);
         contentPane.add(btn_start);
@@ -236,8 +225,6 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         if ("progress" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
             progressBar.setValue(progress);
-//            taskOutput.append(String.format(
-//                    "Completed %d%% of task.\n", task.getProgress()));
         } 
     }
     
@@ -288,10 +275,7 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
          */
         @Override
         public void done() {
-//            Toolkit.getDefaultToolkit().beep();
         	btn_start.setEnabled(true);
-//            setCursor(null); turn off the wait cursor
-//            taskOutput.append("Done!\n");
         }
     }
     
