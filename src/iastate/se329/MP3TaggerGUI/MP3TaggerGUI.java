@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,9 +37,9 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
 
     private static final long serialVersionUID = 1L;
     
-    private static final int GUIWidth = 450;
+    private static final int GUIWidth = 550;
     private static final int lrMargin = 10;
-    private static final int buttonWidth = 90;
+    private static final int buttonWidth = 100;
     
     private static final int startingY = 10;
     private static final int ySpaceBetweenSections = 30;
@@ -114,12 +115,28 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         contentPane.add(lbl_fileStructureInput);
 
         yCoord += ySpaceWithinSections;
+        String[] structureOptions = {"--", "Artist", "Year", "Album", "Track", "Title"};
+        JComboBox[] options = {new JComboBox(structureOptions), 
+        		new JComboBox(structureOptions), new JComboBox(structureOptions), 
+        		new JComboBox(structureOptions), new JComboBox(structureOptions)};
+        
+        int i = 0;
+        for (JComboBox o : options) {
+            o.setSelectedIndex(0);
+            o.setBounds(lrMargin + buttonWidth*(i++), yCoord, buttonWidth, 21);
+            contentPane.add(o);
+        }
+        
+        //structureList.addActionListener();
+
+        
+        /*
         txt_fileStructureInput = new JTextField();
         txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %A (Artist), %a (Album), %T (Track Title), %t (TrackNumber, and %Y (Year)");
         txt_fileStructureInput.setText("%A" + OSCompatibility.delimiter() + "%a" + OSCompatibility.delimiter() + "%T.mp3");
         txt_fileStructureInput.setBounds(lrMargin, yCoord, getSize().width - buttonWidth - xSpaceBtwnFieldAndButton - lrMargin, 21);
         contentPane.add(txt_fileStructureInput);
-        txt_fileStructureInput.setColumns(10);
+        txt_fileStructureInput.setColumns(10);*/
 
         // Source directory input
         yCoord += ySpaceBetweenSections;
@@ -211,7 +228,8 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
             	Task task;
             	tagger.setDestinationFolderPath(txt_destinationDir.getText());
             	tagger.setSourceFolderPath(txt_sourceDir.getText());
-            	tagger.setFileStructurePattern(txt_fileStructureInput.getText());
+            	System.out.println(options[0].getSelectedItem());
+            	tagger.setFileStructurePattern(convertUserInput(options));
             	tagger.setCopyMode(copyCheck.isSelected());
             	tagger.setMetadataUpdate(metadataCheck.isSelected());
        
@@ -300,6 +318,32 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         public void done() {
         	btn_start.setEnabled(true);
         }
+    }
+    
+    private String convertUserInput(JComboBox[] options) {
+    	String result = "";
+    	String[] from = {"--", "Artist", "Year", "Album", "Track", "Title"};
+    	String[] to   = {""  , "%A"    , "%Y"  , "%a"   , "%t"   , "%t"};
+    	
+    	boolean needDelimiter = false;
+    	
+    	for (JComboBox o : options) {
+    		String s = o.getSelectedItem().toString();
+    		if (!s.equals(from[0])) if (needDelimiter) result += OSCompatibility.delimiter();
+    		for (int i = 0; i < from.length; i++) {
+    			if (s.equals(from[i])) {
+    				if (i == 0) needDelimiter = false;
+    				else needDelimiter = true;
+    				result += to[i];
+    			}
+    		}
+    	}
+    	
+    	result += ".mp3";
+    	
+    	System.out.println(result);
+    	
+    	return result;
     }
     
 }
