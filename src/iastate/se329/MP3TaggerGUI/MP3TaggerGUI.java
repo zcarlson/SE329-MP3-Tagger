@@ -30,6 +30,11 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
 {
 
     private static final long serialVersionUID = 1L;
+    
+    private static final int startingY = 10;
+    private static final int spaceBtwnLabels = 30;
+    private static final int spaceBtwnLabelsAndFields = 20;
+    
     private JPanel contentPane;
     private JTextField txt_fileStructureInput;
     private JTextField txt_sourceDir;
@@ -73,66 +78,49 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         
         tagger = new MP3TaggerController();
         
-        // Initialize contentPane (the JPanel
+        // Initialize contentPane (the JPanel)
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
+        
+        int yCoord = startingY;
+        
+        // Add title
+        JLabel lbl_title = new JLabel("MP3 Tagger");
+        lbl_title.setToolTipText("Input the desired file structure to be created");
+        lbl_title.setBounds(10, yCoord, 100, 21);
+        contentPane.add(lbl_title);
 
-        // Copy Mode Check
-        JCheckBox copyCheck = new JCheckBox("Copy Files");
-        copyCheck.setSelected(true);
-        copyCheck.setBounds(10, 165, 150, 21);
-        contentPane.add(copyCheck);
-        
-        // AlbumArt Update Mode Check
-        JCheckBox artCheck = new JCheckBox("Embed Art");
-        artCheck.setSelected(false);
-        artCheck.setBounds(160, 165, 150, 21);
-        contentPane.add(artCheck);
-        
-     	// Metadata Update Mode Check
-        JCheckBox metadataCheck = new JCheckBox("Update Metadata");
-        metadataCheck.setSelected(false);
-        metadataCheck.setBounds(10, 185, 150, 21);
-        contentPane.add(metadataCheck);
-        
         // File structure input
+        yCoord += spaceBtwnLabels;
         JLabel lbl_fileStructureInput = new JLabel("File Structure");
         lbl_fileStructureInput.setToolTipText("Input the desired file structure to be created");
-        lbl_fileStructureInput.setBounds(10, 10, 100, 21);
+        lbl_fileStructureInput.setBounds(10, yCoord, 100, 21);
         contentPane.add(lbl_fileStructureInput);
 
+        yCoord += spaceBtwnLabelsAndFields;
         txt_fileStructureInput = new JTextField();
         txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %A (Artist), %a (Album), %T (Track Title), %t (TrackNumber, and %Y (Year)");
         txt_fileStructureInput.setText("%A" + OSCompatibility.delimiter() + "%a" + OSCompatibility.delimiter() + "%T.mp3");
-        txt_fileStructureInput.setBounds(10, 31, 200, 21);
+        txt_fileStructureInput.setBounds(10, yCoord, 200, 21);
         contentPane.add(txt_fileStructureInput);
         txt_fileStructureInput.setColumns(10);
 
         // Source directory input
+        yCoord += spaceBtwnLabels;
         JLabel lbl_sourceDir = new JLabel("Source");
-        lbl_sourceDir.setBounds(10, 65, 100, 21);
+        lbl_sourceDir.setBounds(10, yCoord, 100, 21);
         contentPane.add(lbl_sourceDir);
 
+        yCoord += spaceBtwnLabelsAndFields;
         txt_sourceDir = new JTextField();
         txt_sourceDir.setText(OSCompatibility.defaultSourcePath());
-        txt_sourceDir.setBounds(10, 86, 200, 21);
+        txt_sourceDir.setBounds(10, yCoord, 200, 21);
         contentPane.add(txt_sourceDir);
         txt_sourceDir.setColumns(10);
-
-        // Destination directory input
-        JLabel lbl_destinationDir = new JLabel("Destination");
-        lbl_destinationDir.setBounds(10, 120, 100, 21);
-        contentPane.add(lbl_destinationDir);
-
-        txt_destinationDir = new JTextField();
-        txt_destinationDir.setText(OSCompatibility.defaultTargetPath());
-        txt_destinationDir.setColumns(10);
-        txt_destinationDir.setBounds(10, 141, 200, 21);
-        contentPane.add(txt_destinationDir);
-
-        // File browser buttons
+        
+        // Source browse button
         JButton btn_destinationFileBrowser = new JButton("Browse");
         btn_destinationFileBrowser.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
@@ -145,9 +133,23 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
                 }
             }
         });
-        btn_destinationFileBrowser.setBounds(335, 140, 89, 23);
+        btn_destinationFileBrowser.setBounds(335, yCoord, 89, 23);
         contentPane.add(btn_destinationFileBrowser);
 
+        // Destination directory input
+        yCoord += spaceBtwnLabels;
+        JLabel lbl_destinationDir = new JLabel("Destination");
+        lbl_destinationDir.setBounds(10, yCoord, 100, 21);
+        contentPane.add(lbl_destinationDir);
+        
+        yCoord += spaceBtwnLabelsAndFields;
+        txt_destinationDir = new JTextField();
+        txt_destinationDir.setText(OSCompatibility.defaultTargetPath());
+        txt_destinationDir.setColumns(10);
+        txt_destinationDir.setBounds(10, yCoord, 200, 21);
+        contentPane.add(txt_destinationDir);
+
+        // Destination browse button
         JButton btn_sourcefilebrowser = new JButton("Browse");
         btn_sourcefilebrowser.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
@@ -161,10 +163,31 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
                 }
             }
         });
-        btn_sourcefilebrowser.setBounds(335, 85, 89, 23);
+        btn_sourcefilebrowser.setBounds(335, yCoord, 89, 23);
         contentPane.add(btn_sourcefilebrowser);
+        
+        // Copy Mode Check
+        yCoord += spaceBtwnLabels;
+        JCheckBox copyCheck = new JCheckBox("Copy Files");
+        copyCheck.setSelected(true);
+        copyCheck.setBounds(10, yCoord, 150, 21);
+        contentPane.add(copyCheck);
+        
+        // AlbumArt Update Mode Check
+        JCheckBox artCheck = new JCheckBox("Embed Art");
+        artCheck.setSelected(false);
+        artCheck.setBounds(160, yCoord, 150, 21);
+        contentPane.add(artCheck);
+        
+     	// Metadata Update Mode Check
+        yCoord += spaceBtwnLabelsAndFields;
+        JCheckBox metadataCheck = new JCheckBox("Update Metadata");
+        metadataCheck.setSelected(false);
+        metadataCheck.setBounds(10, yCoord, 150, 21);
+        contentPane.add(metadataCheck);
 
         // Start and stop buttons
+        yCoord += spaceBtwnLabels;
         btn_start = new JButton("Start");
         btn_start.setActionCommand("start");
         btn_start.addActionListener(new ActionListener() {
@@ -190,17 +213,17 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
             }
         });
         
-        btn_start.setBounds(10, 207, 89, 23);
+        btn_start.setBounds(10, yCoord, 89, 23);
         contentPane.add(btn_start);
         
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
         progressBar.setStringPainted(true);
-        progressBar.setBounds(120, 207, 200, 23);
+        progressBar.setBounds(120, yCoord, 200, 23);
         contentPane.add(progressBar);
 
         btn_stop = new JButton("Stop");
-        btn_stop.setBounds(335, 207, 89, 23);
+        btn_stop.setBounds(335, yCoord, 89, 23);
         contentPane.add(btn_stop);
         btn_stop.setEnabled(false);
     }
