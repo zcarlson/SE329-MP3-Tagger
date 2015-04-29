@@ -117,12 +117,12 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
      * This method sorts the MP3 files in the specified source directory and either moves or copies the music into the specified destination directory, in the format specified by the file structure pattern.
      * @return True upon successful completion.
      */
-    public boolean start(File current, String slash) {
+    public boolean start(File current) {
         
             if (!current.isDirectory()) {
                 update(current);
                 embedAlbumArt(current);
-                organize(current, slash);
+                organize(current);
             }
        
 
@@ -149,22 +149,24 @@ public class MP3Tagger implements MP3TaggerInterface, Runnable {
      * @param current An mp3 file handle
      * @param slash backslash or forward slash, depending on the operating system.
      */
-    private void organize(File current, String slash) {
-        WritableMp3File currentmp3;
+    private void organize(File current) {
+        WritableMp3File currentMp3;
+        char delimiter = OSCompatibility.delimiter();
         try {
             // colons cause problems. need to escape the bad characters
-            currentmp3 = new WritableMp3File(current);
-            System.out.println(this.destPath + slash
-                    + currentmp3.getPath(this.filePattern));
-            // copy or move files into proper position.
-            if (this.copyMode) {
-
-                FileUtils.copyFile(current, new File(this.destPath + slash
-                        + currentmp3.getPath(this.filePattern)));
-            } else {
-                FileUtils.moveFile(current, new File(this.destPath + slash
-                        + currentmp3.getPath(this.filePattern)));
-            }
+            currentMp3 = new WritableMp3File(current);    
+            
+            // Make the track number just a number instead of e.g. 3/13 for 3rd track out of 13
+            String trackOriginal = currentMp3.getPath("%t");
+            String trackBetter = trackOriginal.substring(0, trackOriginal.indexOf(delimiter));
+            
+            // Get good mp3 path
+        	String mp3Name = currentMp3.getPath(this.filePattern);
+        	if (filePattern.contains("%t")) mp3Name = mp3Name.replace(trackOriginal, trackBetter);
+        	String filePath = this.destPath + delimiter + mp3Name;
+        	if (this.copyMode) FileUtils.copyFile(current, new File(filePath));
+            else FileUtils.moveFile(current, new File(filePath));
+        	System.out.println(filePath);
         } catch (UnsupportedTagException e) {
             e.printStackTrace();
         } catch (InvalidDataException e) {
