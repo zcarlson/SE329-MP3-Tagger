@@ -4,6 +4,7 @@ import iastate.se329.MP3Tagger.MP3TaggerController;
 import iastate.se329.MP3Tagger.OSCompatibility;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -19,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
@@ -31,9 +33,14 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
 
     private static final long serialVersionUID = 1L;
     
+    private static final int GUIWidth = 450;
+    private static final int lrMargin = 10;
+    private static final int buttonWidth = 90;
+    
     private static final int startingY = 10;
-    private static final int spaceBtwnLabels = 30;
-    private static final int spaceBtwnLabelsAndFields = 20;
+    private static final int ySpaceBetweenSections = 30;
+    private static final int ySpaceWithinSections = 20;
+    private static final int xSpaceBtwnFieldAndButton = 10;
     
     private JPanel contentPane;
     private JTextField txt_fileStructureInput;
@@ -72,9 +79,10 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
     {
         // Initialization
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, GUIWidth, 300);
         fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        setResizable(false);
         
         tagger = new MP3TaggerController();
         
@@ -87,36 +95,40 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         int yCoord = startingY;
         
         // Add title
-        JLabel lbl_title = new JLabel("MP3 Tagger");
+        JLabel lbl_title = new JLabel("MP3 Tagger", SwingConstants.CENTER);
         lbl_title.setToolTipText("Input the desired file structure to be created");
-        lbl_title.setBounds(10, yCoord, 100, 21);
+        lbl_title.setBounds(0, yCoord, GUIWidth, 21);
+        Font font = lbl_title.getFont();
+	    Font boldFont = new Font(font.getFontName(), Font.BOLD, font.getSize());
+	    lbl_title.setFont(boldFont);
         contentPane.add(lbl_title);
 
         // File structure input
-        yCoord += spaceBtwnLabels;
+        yCoord += ySpaceBetweenSections;
         JLabel lbl_fileStructureInput = new JLabel("File Structure");
         lbl_fileStructureInput.setToolTipText("Input the desired file structure to be created");
-        lbl_fileStructureInput.setBounds(10, yCoord, 100, 21);
+        lbl_fileStructureInput.setBounds(lrMargin, yCoord, getSize().width - lrMargin*2, 21);
         contentPane.add(lbl_fileStructureInput);
 
-        yCoord += spaceBtwnLabelsAndFields;
+        yCoord += ySpaceWithinSections;
         txt_fileStructureInput = new JTextField();
         txt_fileStructureInput.setToolTipText("Any item followed by a '/' or '\\' is a folder name. The file name is designated by the last option.  Valid options include: %A (Artist), %a (Album), %T (Track Title), %t (TrackNumber, and %Y (Year)");
         txt_fileStructureInput.setText("%A" + OSCompatibility.delimiter() + "%a" + OSCompatibility.delimiter() + "%T.mp3");
-        txt_fileStructureInput.setBounds(10, yCoord, 200, 21);
+        txt_fileStructureInput.setBounds(lrMargin, yCoord, getSize().width - buttonWidth - xSpaceBtwnFieldAndButton - lrMargin, 21);
         contentPane.add(txt_fileStructureInput);
         txt_fileStructureInput.setColumns(10);
 
         // Source directory input
-        yCoord += spaceBtwnLabels;
+        yCoord += ySpaceBetweenSections;
         JLabel lbl_sourceDir = new JLabel("Source");
-        lbl_sourceDir.setBounds(10, yCoord, 100, 21);
+        lbl_sourceDir.setBounds(lrMargin, yCoord, 100, 21);
         contentPane.add(lbl_sourceDir);
 
-        yCoord += spaceBtwnLabelsAndFields;
+        // Input field
+        yCoord += ySpaceWithinSections;
         txt_sourceDir = new JTextField();
         txt_sourceDir.setText(OSCompatibility.defaultSourcePath());
-        txt_sourceDir.setBounds(10, yCoord, 200, 21);
+        txt_sourceDir.setBounds(lrMargin, yCoord, getSize().width - buttonWidth - xSpaceBtwnFieldAndButton - lrMargin, 21);
         contentPane.add(txt_sourceDir);
         txt_sourceDir.setColumns(10);
         
@@ -133,20 +145,21 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
                 }
             }
         });
-        btn_destinationFileBrowser.setBounds(335, yCoord, 89, 23);
+        btn_destinationFileBrowser.setBounds(getSize().width - buttonWidth - lrMargin, yCoord, buttonWidth, 23);
         contentPane.add(btn_destinationFileBrowser);
 
         // Destination directory input
-        yCoord += spaceBtwnLabels;
+        yCoord += ySpaceBetweenSections;
         JLabel lbl_destinationDir = new JLabel("Destination");
-        lbl_destinationDir.setBounds(10, yCoord, 100, 21);
+        lbl_destinationDir.setBounds(lrMargin, yCoord, 100, 21);
         contentPane.add(lbl_destinationDir);
         
-        yCoord += spaceBtwnLabelsAndFields;
+        // Input field
+        yCoord += ySpaceWithinSections;
         txt_destinationDir = new JTextField();
         txt_destinationDir.setText(OSCompatibility.defaultTargetPath());
         txt_destinationDir.setColumns(10);
-        txt_destinationDir.setBounds(10, yCoord, 200, 21);
+        txt_destinationDir.setBounds(lrMargin, yCoord, getSize().width - buttonWidth - xSpaceBtwnFieldAndButton - lrMargin, 21);
         contentPane.add(txt_destinationDir);
 
         // Destination browse button
@@ -163,14 +176,14 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
                 }
             }
         });
-        btn_sourcefilebrowser.setBounds(335, yCoord, 89, 23);
+        btn_sourcefilebrowser.setBounds(getSize().width - buttonWidth - lrMargin, yCoord, buttonWidth, 23);
         contentPane.add(btn_sourcefilebrowser);
         
         // Copy Mode Check
-        yCoord += spaceBtwnLabels;
+        yCoord += ySpaceBetweenSections;
         JCheckBox copyCheck = new JCheckBox("Copy Files");
         copyCheck.setSelected(true);
-        copyCheck.setBounds(10, yCoord, 150, 21);
+        copyCheck.setBounds(lrMargin, yCoord, 150, 21);
         contentPane.add(copyCheck);
         
         // AlbumArt Update Mode Check
@@ -180,14 +193,14 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
         contentPane.add(artCheck);
         
      	// Metadata Update Mode Check
-        yCoord += spaceBtwnLabelsAndFields;
+        yCoord += ySpaceWithinSections;
         JCheckBox metadataCheck = new JCheckBox("Update Metadata");
         metadataCheck.setSelected(false);
-        metadataCheck.setBounds(10, yCoord, 150, 21);
+        metadataCheck.setBounds(lrMargin, yCoord, 150, 21);
         contentPane.add(metadataCheck);
 
         // Start and stop buttons
-        yCoord += spaceBtwnLabels;
+        yCoord += ySpaceBetweenSections;
         btn_start = new JButton("Start");
         btn_start.setActionCommand("start");
         btn_start.addActionListener(new ActionListener() {
@@ -213,17 +226,17 @@ public class MP3TaggerGUI extends JFrame implements PropertyChangeListener
             }
         });
         
-        btn_start.setBounds(10, yCoord, 89, 23);
+        btn_start.setBounds(lrMargin, yCoord, buttonWidth, 23);
         contentPane.add(btn_start);
         
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
         progressBar.setStringPainted(true);
-        progressBar.setBounds(120, yCoord, 200, 23);
+        progressBar.setBounds(lrMargin + buttonWidth + xSpaceBtwnFieldAndButton, yCoord, getSize().width - xSpaceBtwnFieldAndButton*2 - lrMargin*2 - buttonWidth*2, 23);
         contentPane.add(progressBar);
 
         btn_stop = new JButton("Stop");
-        btn_stop.setBounds(335, yCoord, 89, 23);
+        btn_stop.setBounds(getSize().width - lrMargin - buttonWidth, yCoord, buttonWidth, 23);
         contentPane.add(btn_stop);
         btn_stop.setEnabled(false);
     }
